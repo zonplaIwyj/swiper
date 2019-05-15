@@ -1,6 +1,8 @@
 from django.core.cache import cache
 from django.shortcuts import render
+from django.http import HttpResponse
 
+from user.logic import handler_avatar_upload
 from user.models import User
 from common import errors
 from lib.http import render_json
@@ -8,7 +10,6 @@ from lib.sms import send_vcode
 from common import keys
 from user.forms import ContactForm
 from user.forms import ProfileModelForm
-
 
 
 # Create your views here.
@@ -81,9 +82,14 @@ def edit_profile(request):
         return render_json(code=0, data=profile.to_dict())
     return render_json(code=errors.PROFILE_ERROR, data=form.errors)
 
-#
-# def (request):
-#     """头像上传"""
-#     pass
+
+def upload_avatar(request):
+    """头像上传"""
+    avatar = request.FILES.get('avatar')
+    # 保存用户上传的文件到本地
+    # 拼出文件路径
+    uid = request.session['uid']
+    handler_avatar_upload(uid, avatar)
+    return render_json()
 
 

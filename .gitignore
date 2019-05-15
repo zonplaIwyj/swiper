@@ -2,4 +2,4 @@
 .venv/
 __pycache__/
 *.pyc
-
+.qiniu_pythonsdk_hostscache.json

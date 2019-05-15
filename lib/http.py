@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.conf import settings
 
 
-def render_json(code, data):
+def render_json(code=0, data=None):
     data_json = {
         'code': code,
         'data': data

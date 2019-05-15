@@ -9,3 +9,11 @@ YZX_PARAMS = {
  "param": None,
  "mobile": None,
 }
+
+
+#  七牛云的配置
+QN_AK = 'uTCi4T1X2ozCDwQvzyEjCszNsATntmvKv-8ntFh0'
+QN_SK = 'utEyFUPxY1C_wy8O2k3zbSnUteDhwWbigAGP4VOP'
+QN_BUCKET = 'sz1812'
+
+
