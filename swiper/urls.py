@@ -18,5 +18,8 @@ from django.contrib import admin
 from user import api as user_api
 urlpatterns = [
     url(r'^api/user/submit/phonenum/$', user_api.submit_phonenum),
-    url(r'^api/user/submit/vcode/$', user_api.submit_vcode)
+    url(r'^api/user/submit/vcode/$', user_api.submit_vcode),
+    url(r'^api/user/get/profile/$', user_api.get_profile),
+    url(r'^user/form/$', user_api.get_form),
+    url(r'^api/user/edit/profile/$', user_api.edit_profile)
 ]

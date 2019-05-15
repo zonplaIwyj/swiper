@@ -1,10 +1,14 @@
 from django.core.cache import cache
+from django.shortcuts import render
 
 from user.models import User
 from common import errors
 from lib.http import render_json
 from lib.sms import send_vcode
 from common import keys
+from user.forms import ContactForm
+from user.forms import ProfileModelForm
+
 
 
 # Create your views here.
@@ -46,13 +50,37 @@ def submit_vcode(request):
         return render_json(code=errors.VCODE_ERROR, data='验证码错误')
 
 
-# def (request):
-#     """获取个人资料"""
-#     pass
-#
-# def (request):
-#     """修改个人资料"""
-#     pass
+def get_profile(request):
+    """获取个人交友资料"""
+    user = User.objects.get(id=request.session['uid'])
+    return render_json(code=0, data=user.profile.to_dict())
+
+
+def get_form(request):
+    form = ContactForm()
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        # 判断form表单数据是否合法
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            sender = form.cleaned_data['sender']
+            cc_myself = form.cleaned_data['cc_myself']
+            return render(request, 'form.html',  locals())
+    return render(request, 'form.html',  {'form': form})
+
+
+def edit_profile(request):
+    """修改个人资料"""
+    # form表单
+    form = ProfileModelForm(request.POST)
+    if form.is_valid():
+        profile = form.save(commit=False)
+        profile.id = request.session['uid']
+        profile.save()
+        return render_json(code=0, data=profile.to_dict())
+    return render_json(code=errors.PROFILE_ERROR, data=form.errors)
+
 #
 # def (request):
 #     """头像上传"""
