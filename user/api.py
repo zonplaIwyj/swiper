@@ -17,11 +17,8 @@ def submit_phonenum(request):
     """提交手机号码"""
     phone = request.POST.get('phone')
     if phone:
-        result, msg = send_vcode(phone)
-        if result:
-            return render_json(code=0, data=msg)
-        else:
-            return render_json(code=errors.SMS_ERROR, data=msg)
+        send_vcode.delay(phone)
+        return render_json()
     else:
         return render_json(code=errors.PhoneNum_Empty, data='手机号码不能为空')
 
@@ -89,7 +86,7 @@ def upload_avatar(request):
     # 保存用户上传的文件到本地
     # 拼出文件路径
     uid = request.session['uid']
-    handler_avatar_upload(uid, avatar)
+    handler_avatar_upload.delay(uid, avatar)
     return render_json()
 
 

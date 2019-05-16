@@ -8,6 +8,7 @@ from swiper import config
 from lib.http import render_json
 from common import errors
 from common import keys
+from worker import celery_app
 
 # 1000 - 9999
 def gen_vcode(size=4):
@@ -18,6 +19,7 @@ def gen_vcode(size=4):
     return random.randint(start, end)
 
 
+@celery_app.task
 def send_vcode(phone):
     vcode = gen_vcode()
     # 加入缓存中
